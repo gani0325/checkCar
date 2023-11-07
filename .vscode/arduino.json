@@ -1,5 +1,6 @@
 {
+    "board": "arduino:avr:uno",
     "port": "/dev/ttyACM0",
-    "board": "arduino:avr:uno"
-
+    "sketch": "server/mytest2/mytest2.ino",
+    "output": "build"
 }
