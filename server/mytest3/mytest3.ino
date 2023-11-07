@@ -77,59 +77,47 @@
  * I2C를 이용한 LCD 출력
  */
 
-#include <Wire.h>              // I2C 통신 라이브러리 설정
-#include <LiquidCrystal_I2C.h> // I2C LCD 라이브러리 설정
+#include <SoftwareSerial.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <string.h>
 
-LiquidCrystal_I2C lcd(0x27, 16, 2); // LCD I2C adrress 설정
+SoftwareSerial mySerial(10, 11); // TX RX
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 void setup()
 {
-  Serial.begin(9600); // 9600 bps로 시리얼 통신 설정
-  lcd.init();         // LCD 설정
-  lcd.clear();        // LCD를 모두 지운다.
-  lcd.backlight();    // 백라이트를 켠다
-
-  // Arduino LCD, Welcome 표시
-  lcd.setCursor(0, 0);
-  lcd.print("Arduino LCD");
-  delay(1000);
-  lcd.setCursor(0, 1);
-  lcd.print("Welcom!");
-  delay(250);
-
-  // LCD 백라이트를 두 번 점멸
-  lcd.noBacklight();
-  delay(250);
+  lcd.begin();
   lcd.backlight();
-  delay(250);
-  lcd.noBacklight();
-  delay(250);
-  lcd.backlight();
-  delay(3000);
-
-  // Open Serial Monitor, Type to dispaly 표시
-  lcd.clear();
-  lcd.setCursor(0, 0); // Start at character 0 on line 0
-  lcd.print("Open Serial Monitor");
-  lcd.setCursor(0, 1);
-  lcd.print("Type to display");
+  mySerial.begin(9600);
+  Serial.begin(9600);
 }
+
+char lcdChar = "";
+String lcdString = "";
+
+String msg1 = "";
 
 void loop()
 {
-  // 시리어 통신 수신값이 있을 때
-  if (Serial.available())
+  if (mySerial.available())
   {
     delay(100);
-    lcd.clear();                 // 모두 삭제
-    lcd.setCursor(0, 0);         // 커서를 좌측 상단으로
-    lcd.print("Message for PC"); // 메지지 출력
-    lcd.setCursor(0, 1);         // 커서를 두 번째 줄로
-
-    // LCD에 PC에서 전송된 데이터를 출력
-    while (Serial.available() > 0)
+    lcd.clear();
+    lcd.print(msg1);
+    while (mySerial.available())
     {
-      lcd.write(Serial.read());
+      lcdChar = (char)mySerial.read(); // 문자 하나씩 읽고
+      lcdString += lcdChar;            // 읽은 문자를 하나씩 더해 문자열을 만듬
+      lcd.setCursor(0, 1);
     }
+    lcd.print(lcdString);
+    msg1 = lcdString;
+    lcdString = "";
+  }
+
+  if (Serial.available())
+  {
+    Serial.write(Serial.read());
   }
 }
