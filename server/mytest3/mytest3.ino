@@ -1,5 +1,4 @@
-// mytest.ino
-//#include "test2.h"
+// mytest3.ino
 
 // LiquidCrystal 라이브러리 추가 
 #include <Wire.h>
@@ -28,6 +27,15 @@ void setup() {
   lcd.backlight();        // LCD 백라이트 켜기
 }
 
+// LCD 출력
+void LCDprint(String data) {
+  lcd.setCursor(0, 0);    // 1번째, 1라인
+  lcd.print(data);
+  delay(1500);
+  
+  lcd.clear();            // 글자를 모두 지워라
+}
+
 void loop() {
 
   int X = analogRead(0);                           // 변수 X에 아날로그 0번핀에 입력되는 신호를 대입
@@ -38,26 +46,29 @@ void loop() {
   int buttonValue4 = digitalRead(4);
   int buttonValue5 = digitalRead(5);
 
-  char data[16];
-  
-  int answer = 0;
-  answer = printCountTest3(answer);
-  Serial.print(answer);
+
+  if (flagCommand() == 1) {
+    int answer = 0;
+    answer = LCDmessage(answer);
+
+    Serial.print(answer);
+  }
+
   // if (buttonValue2 == LOW) {                       // if문을 이용하여 각 버튼이 눌리면 알파벳이 시리얼모니터에 출력되도록 설정
   //   String data = "front car!";
-  //   printCountTest1(data);
+  //   LCDprint(data);
   // }
   // if (buttonValue3 == LOW) {
   //   String data = "front animal!";
-  //   printCountTest1(data);
+  //   LCDprint(data);
   // }
   // if (buttonValue4 == LOW) {
   //   String data = "baby in car";
-  //   printCountTest1(data);
+  //   LCDprint(data);
   // }
   // if (buttonValue5 == LOW) {
   //   String data = "broken car";
-  //   printCountTest1(data);
+  //   LCDprint(data);
   // }
   // delay(500);                                        // 0.5초동안 지속
 }

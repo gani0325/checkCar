@@ -5,11 +5,17 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 
+#include "test2.h"
+
 #define BUF_SIZE 1024
 void error_handling(char *message);
 
-int printCountTest3(int num) {
-   printCountTest4ByTest3(int num);
+int flagCommand() {
+   CppflagCommand();
+}
+
+int LCDmessage(int num) {
+   CppLCDmessage(int num);
 }
 
 int main(int argc, char *argv[])
@@ -51,6 +57,10 @@ int main(int argc, char *argv[])
       if(!strcmp(message, "q\n") || !strcmp(message, "Q\n"))
          break;
 
+      // Command 받은 flag = 1
+      flagCommand();
+
+      // Command ECHO 날리기
       write(sock, message, strlen(message));
       str_len = read(sock, message, BUF_SIZE - 1);
       message[str_len] = 0;
@@ -58,7 +68,7 @@ int main(int argc, char *argv[])
 
       // 아두이노로 데이터 보내기
       int num = 1004;
-      printCountTest3(num);
+      LCDmessage(num);
    }
 
    close(sock);
