@@ -33,9 +33,7 @@ void button_4ctor(button_t* obj, int digitalpin, int pinMode){
 	calloc(obj->digitalpin, sizeof(int*));
 	obj->digitalpin = digitalpin+1;
 	
-	obj->pinMode = (int*)malloc(sizeof(int));
-	calloc(obj->pinMode, sizeof(int*));
-	obj->pinMode = pinMode;
+	pinMode_CPP(digitalpin, pinMode);
 }
 
 void button_pin_delete(button_t* obj){

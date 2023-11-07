@@ -7,4 +7,5 @@ void printCountTest4(int count) {
 
 extern "C" void printCountTest4ByTest3(int count) {
     Serial.println(count);
+    
 }

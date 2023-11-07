@@ -15,8 +15,10 @@ void* joystick_new(){
 }// joystick_t 객체할당
 
 void joystick_ctor(joystick_t* obj){
-	obj->but = button_new();//버튼 1개에 대한 하나의 객체 메모리할당
-	button_ctor(obj->but);//버튼 1개에 대한 하나의 객체 생성.
+	obj->but = button_4new(); //버튼 1개에 대한 하나의 객체 메모리할당
+	for(int i = 0 ; i<5; i++){
+	button_4ctor(obj->but, i, INPUT_PULLUP);//버튼 1개에 대한 하나의 객체 생성.
+	}
 
 	//obj->xy = xy_new();
 	//xy_ctor(obj->xy);
