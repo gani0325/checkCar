@@ -1,4 +1,5 @@
 #include "../../arduino/arduino.h"
+#include "button.h"
 
 typedef enum{
 ON,
@@ -35,7 +36,7 @@ void button_4ctor(button_t* obj, int digitalpin, int pinMode){
 	obj->pinMode = (int*)malloc(sizeof(int));
 	calloc(obj->pinMode, sizeof(int*));
 	obj->pinMode = pinMode;
-};
+}
 
 void button_pin_delete(button_t* obj){
 free(obj->digitalpin);
@@ -45,7 +46,7 @@ free(obj);
 } //할당제거
 void button_pin_dtor(button_t* obj){
 
-}; //소멸자 파일 생성때 구현 고민 현재는 안쓰임.p663쪽 파일 닫는데 쓰임
+} //소멸자 파일 생성때 구현 고민 현재는 안쓰임.p663쪽 파일 닫는데 쓰임
 
 void button_clear(button_t* obj){
 obj->result->A = OFF;

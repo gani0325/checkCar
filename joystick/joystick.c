@@ -1,8 +1,10 @@
+#include "joystick.h"
 #include "button/button.h"
 
+
 typedef struct joystick_t{
-	button_t* but;
-	//joystick_xy_t* xy; 
+	struct button_t* but;
+	//struct joystick_xy_t* xy; 
 }joystick_t;
 
 int* joystick_button[4];//digital pin: 4개
@@ -18,9 +20,9 @@ void joystick_ctor(joystick_t* obj){
 
 	//obj->xy = xy_new();
 	//xy_ctor(obj->xy);
-};
+}
 
-void joystick_pin_delete(joystick_t* obj){
+void joystick_delete(joystick_t* obj){
 free(obj->but);
 //free(obj->xy);
 free(obj);
@@ -28,4 +30,4 @@ free(obj);
 
 void joystick_dtor(joystick_t* obj){
 
-}; //소멸자 파일 생성때 구현 고민 현재는 안쓰임.p663쪽 파일 닫는데 쓰임
+} //소멸자 파일 생성때 구현 고민 현재는 안쓰임.p663쪽 파일 닫는데 쓰임
