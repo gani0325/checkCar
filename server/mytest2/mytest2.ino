@@ -1,12 +1,12 @@
+
 // mytest.ino
 //#include "test2.h"
 
 // LiquidCrystal 라이브러리 추가 
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
-#include "test2.h" 
-#include "joystick/joystick.h"
-#include "joystick/button/button.h"
+#include "joystick.h"
+#include "button.h"
 
 // 조이스틱 쉴드의 버튼이 누르는 걸 입력받기 위해 선언
 
@@ -15,10 +15,8 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);      // 주소, 열, 행
 
 void setup() {
   Serial.begin(9600);    
-  
   joystick_t* joystick = (joystick_t*)joystick_new();                           // 시리얼 통신을 시작하며, 통신속도는 9600
   joystick_ctor(joystick);
-
   lcd.init();     // LCD 초기화
   // Print a message to the LCD
   lcd.backlight();        // LCD 백라이트 켜기

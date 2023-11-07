@@ -1,4 +1,3 @@
-#include "../../arduino/arduino.h"
 #include "button.h"
 
 typedef enum{
@@ -26,21 +25,16 @@ void* button_4new(){
 }// button_t 객체할당
 
 void button_4ctor(button_t* obj, int digitalpin, int pinMode){
-	obj->result = (void*)malloc(sizeof(button_flag_t*));
-	calloc(obj->result, sizeof(button_flag_t*));
-
-	obj->digitalpin = (int*)malloc(sizeof(int));
-	calloc(obj->digitalpin, sizeof(int*));
 	obj->digitalpin = digitalpin+1;
 	
 	pinMode_CPP(digitalpin, pinMode);
 }
 
 void button_pin_delete(button_t* obj){
-free(obj->digitalpin);
-free(obj->result);
-free(obj->pinMode);
-free(obj);
+	free(&(obj->digitalpin));
+    free(obj->result);
+    free(&(obj->pinMode));	
+	free(obj);
 } //할당제거
 void button_pin_dtor(button_t* obj){
 
