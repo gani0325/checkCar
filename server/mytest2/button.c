@@ -1,10 +1,5 @@
 #include "button.h"
 
-typedef enum{
-ON,
-OFF
-}state_t;
-
 typedef struct button_flag_t{
 	bool_t A;
 	bool_t B;
@@ -18,10 +13,10 @@ typedef struct button_t{
 	int pinMode;
 }button_t;
 
-int* button[4];//digital pin: 4개
 
-void* button_4new(){
+void* button_4new(int i){
 	return (void*)malloc(sizeof(button_t));
+	
 }// button_t 객체할당
 
 void button_4ctor(button_t* obj, int digitalpin, int pinMode){
@@ -30,36 +25,28 @@ void button_4ctor(button_t* obj, int digitalpin, int pinMode){
 	pinMode_CPP(digitalpin, pinMode);
 }
 
-void button_pin_delete(button_t* obj){
-	free(&(obj->digitalpin));
-    free(obj->result);
-    free(&(obj->pinMode));	
-	free(obj);
-} //할당제거
-void button_pin_dtor(button_t* obj){
+char button_digitalRead(button_t* obj){
+	button = '0';
+	if(obj->digitalpin==2){
 
-} //소멸자 파일 생성때 구현 고민 현재는 안쓰임.p663쪽 파일 닫는데 쓰임
+		if(digitalRead_CPP(obj)==0x0){
+			button ='A';
+		}
 
-void button_clear(button_t* obj){
-obj->result->A = OFF;
-obj->result->B = OFF;
-obj->result->C = OFF;
-obj->result->D = OFF;
-}
+	}else if(obj->digitalpin==3){
+		
+		if(digitalRead_CPP(obj)==0x0){
+			button ='B';
+		}
 
-void button_press(button_t* obj, int pin){
-	button_clear(obj);
-	if(obj->digitalpin == 2){
-		obj->result->A = ON;
-		printf("pressA");
-	}else if(pin == 3){
-		obj->result->B = ON;
-		printf("pressB");
-	}else if(pin == 4){
-		obj->result->C = ON;
-		printf("pressC");
-	}else if(pin == 5){
-		obj->result->D = ON;
-		printf("pressD");
+	}else if(obj->digitalpin==4){
+		if(digitalRead_CPP(obj)==0x0){
+			button ='C';
+		}
+	}else if(obj->digitalpin==5){
+		if(digitalRead_CPP(obj)==0x0){
+			button ='D';
+		}
 	}
-}      
+	return button;
+}
