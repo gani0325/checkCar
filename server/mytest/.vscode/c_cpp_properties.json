@@ -3,7 +3,7 @@
     "configurations": [
         {
             "name": "Arduino",
-            "compilerPath": "/home/ubuntu/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
+            "compilerPath": "/home/gani/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/bin/avr-g++",
             "compilerArgs": [
                 "-w",
                 "-std=gnu++11",
@@ -16,14 +16,14 @@
             ],
             "intelliSenseMode": "gcc-x64",
             "includePath": [
-                "/home/ubuntu/.arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino",
-                "/home/ubuntu/.arduino15/packages/arduino/hardware/avr/1.8.6/variants/standard",
-                "/home/ubuntu/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/lib/gcc/avr/7.3.0/include",
-                "/home/ubuntu/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/lib/gcc/avr/7.3.0/include-fixed",
-                "/home/ubuntu/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include"
+                "/home/gani/.arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino",
+                "/home/gani/.arduino15/packages/arduino/hardware/avr/1.8.6/variants/standard",
+                "/home/gani/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/lib/gcc/avr/7.3.0/include",
+                "/home/gani/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/lib/gcc/avr/7.3.0/include-fixed",
+                "/home/gani/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include"
             ],
             "forcedInclude": [
-                "/home/ubuntu/.arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino/Arduino.h"
+                "/home/gani/.arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino/Arduino.h"
             ],
             "cStandard": "c11",
             "cppStandard": "c++11",
