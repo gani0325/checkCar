@@ -59,4 +59,8 @@ void loop() {
     printCountTest1(data);
   }
   delay(500);                                        // 0.5초동안 지속
+<<<<<<< HEAD:server/mytest2/mytest2.ino
 }
+=======
+}
+>>>>>>> 06f1ec22470af0ae50e059118e759e0c73a2bb7d:arduino/mytest2.ino
