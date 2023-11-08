@@ -6,8 +6,12 @@ void setup() {
 }
 
 void loop() {
-  printCountTest3(count+300);
-  delay(500);
-  printCountTest4(count+400);
-  printCountTest1(count);
+  int answer = 0;
+  Serial.print("첫");
+  if (flagCommand() == 1) {
+    Serial.print("둘");
+    answer = LCDmessage(answer);
+  }
+
+  Serial.print(answer);
 }

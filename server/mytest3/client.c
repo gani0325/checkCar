@@ -10,74 +10,78 @@
 #define BUF_SIZE 1024
 void error_handling(char *message);
 
+int testnum = 8888;
+
 int flagCommand() {
    CppflagCommand();
 }
 
 int LCDmessage(int num) {
-   CppLCDmessage(int num);
+   CppLCDmessage(num);
 }
 
-int main(int argc, char *argv[])
-{
-   int sock;
-   char message[BUF_SIZE];
-   int str_len;
-   struct sockaddr_in serv_adr;
+void printCountTest3(int count) {
+  printCountTest4ByTest3(count);
+}
+// int main(int argc, char *argv[])
+// {
+//    int sock;
+//    char message[BUF_SIZE];
+//    int str_len;
+//    struct sockaddr_in serv_adr;
 
-   if(argc != 3)
-   {
-      printf("Usage : %s <IP> <port> \n", argv[0]);
-      exit(1);
-   }
+//    if(argc != 3)
+//    {
+//       printf("Usage : %s <IP> <port> \n", argv[0]);
+//       exit(1);
+//    }
 
-  // ----------- 1. Create socket object ------------------
-   sock = socket(PF_INET, SOCK_STREAM, 0);
-   if(sock == -1)
-      error_handling("socket() error");
+//   // ----------- 1. Create socket object ------------------
+//    sock = socket(PF_INET, SOCK_STREAM, 0);
+//    if(sock == -1)
+//       error_handling("socket() error");
 
-   // ------------ 2. Connect to server-- ------------------
-   memset(&serv_adr, 0, sizeof(serv_adr));
+//    // ------------ 2. Connect to server-- ------------------
+//    memset(&serv_adr, 0, sizeof(serv_adr));
    
-   // Prepare the address
-   serv_adr.sin_family = AF_INET;
-   serv_adr.sin_addr.s_addr = inet_addr(argv[1]);
-   serv_adr.sin_port = htons(atoi(argv[2]));
+//    // Prepare the address
+//    serv_adr.sin_family = AF_INET;
+//    serv_adr.sin_addr.s_addr = inet_addr(argv[1]);
+//    serv_adr.sin_port = htons(atoi(argv[2]));
 
-   if(connect(sock, (struct sockaddr*)&serv_adr, sizeof(serv_adr)) == -1)
-      error_handling("connect() error!");
-  else
-      puts("Connect........");
+//    if(connect(sock, (struct sockaddr*)&serv_adr, sizeof(serv_adr)) == -1)
+//       error_handling("connect() error!");
+//   else
+//       puts("Connect........");
 
-   while(1)
-   {
-      fputs("Input message(Q to quit) : ", stdout);
-      fgets(message, BUF_SIZE, stdin);
+//    while(1)
+//    {
+//       fputs("Input message(Q to quit) : ", stdout);
+//       fgets(message, BUF_SIZE, stdin);
 
-      if(!strcmp(message, "q\n") || !strcmp(message, "Q\n"))
-         break;
+//       if(!strcmp(message, "q\n") || !strcmp(message, "Q\n"))
+//          break;
 
-      // Command 받은 flag = 1
-      flagCommand();
+//       // Command 받은 flag = 1
+//       flagCommand();
 
-      // Command ECHO 날리기
-      write(sock, message, strlen(message));
-      str_len = read(sock, message, BUF_SIZE - 1);
-      message[str_len] = 0;
-      printf("Message form server : %s", message);
+//       // Command ECHO 날리기
+//       write(sock, message, strlen(message));
+//       str_len = read(sock, message, BUF_SIZE - 1);
+//       message[str_len] = 0;
+//       printf("Message form server : %s", message);
 
-      // 아두이노로 데이터 보내기
-      int num = 1004;
-      LCDmessage(num);
-   }
+//       // 아두이노로 데이터 보내기
+//       LCDmessage(1004);
+//    }
 
-   close(sock);
-   return 0;
-}
+//    close(sock);
+//    return 0;
+// }
 
-void error_handling(char *message)
-{
-   fputs(message, stderr);
-   fputc('\n', stderr);
-   exit(1);
-}
+// void error_handling(char *message)
+// {
+//    fputs(message, stderr);
+//    fputc('\n', stderr);
+//    exit(1);
+// }
