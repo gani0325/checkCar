@@ -1,34 +1,29 @@
+
 // mytest.ino
 //#include "test2.h"
 
 // LiquidCrystal 라이브러리 추가 
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
-#include "test2.h" 
+#include "joystick.h"
+#include "button.h"
 
 // 조이스틱 쉴드의 버튼이 누르는 걸 입력받기 위해 선언
-const int buttonPin2 = 2;                           
-const int buttonPin3 = 3;
-const int buttonPin4 = 4;
-const int buttonPin5 = 5;
 
 // lcd 객체 선언
 LiquidCrystal_I2C lcd(0x27, 16, 2);      // 주소, 열, 행
 
 void setup() {
-  Serial.begin(9600);                               // 시리얼 통신을 시작하며, 통신속도는 9600
- 
-  pinMode(buttonPin2, INPUT_PULLUP );
-  pinMode(buttonPin3, INPUT_PULLUP );
-  pinMode(buttonPin4, INPUT_PULLUP );
-  pinMode(buttonPin5, INPUT_PULLUP );
-
+  Serial.begin(9600);    
+  joystick_t* joystick = (joystick_t*)joystick_new();                           // 시리얼 통신을 시작하며, 통신속도는 9600
+  joystick_ctor(joystick);
   lcd.init();     // LCD 초기화
   // Print a message to the LCD
   lcd.backlight();        // LCD 백라이트 켜기
 }
 
 
+// test1.ino
 void printCountTest1(String data) {
   lcd.setCursor(0, 0);    // 1번째, 1라인
   lcd.print(data);
@@ -68,3 +63,50 @@ void loop() {
   }
   delay(500);                                        // 0.5초동안 지속
 }
+
+// #include <Wire.h>
+
+// void setup()
+// {
+//   Wire.begin();
+
+//   Serial.begin(9600);
+//   while (!Serial);           
+//   Serial.println("\nI2C Scanner");
+// }
+
+// void loop()
+// {
+//   byte error, address;
+//   int nDevices;
+//   Serial.println("Scanning...");
+//   nDevices = 0;
+//   for(address = 1; address < 127; address++ ) 
+//   {
+//     Wire.beginTransmission(address);
+//     error = Wire.endTransmission();
+
+//     if (error == 0)
+//     {
+//       Serial.print("I2C device found at address 0x");
+//       if (address<16) 
+//         Serial.print("0");
+//       Serial.print(address,HEX);
+//       Serial.println("  !");
+//       nDevices++;
+//     }
+//     else if (error==4) 
+//     {
+//       Serial.print("Unknow error at address 0x");
+//       if (address<16) 
+//         Serial.print("0");
+//       Serial.println(address,HEX);
+//     }    
+//   }
+
+//   if (nDevices == 0)
+//     Serial.println("No I2C devices found\n");
+//   else
+//     Serial.println("done\n");
+//   delay(5000);
+// }
