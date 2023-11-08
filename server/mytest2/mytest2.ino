@@ -28,6 +28,15 @@ void setup() {
   lcd.backlight();        // LCD 백라이트 켜기
 }
 
+
+void printCountTest1(String data) {
+  lcd.setCursor(0, 0);    // 1번째, 1라인
+  lcd.print(data);
+  delay(1500);
+  
+  lcd.clear();            // 글자를 모두 지워라
+}
+
 void loop() {
 
   int X = analogRead(0);                           // 변수 X에 아날로그 0번핀에 입력되는 신호를 대입
