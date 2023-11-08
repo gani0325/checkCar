@@ -1,6 +1,7 @@
 // mytest3.ino
 
 // LiquidCrystal 라이브러리 추가
+#include <string.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
@@ -36,6 +37,22 @@ void LCDprint(String data) {
 }
 
 void loop() {
+
+  if(Serial.available()) {
+      char data[8];
+      char buf;
+      
+      for (int i = 0; i < 8; i++) {
+          buf = Serial.read();
+          //Serial.print("hi");
+          data[i] = buf;
+          
+      }
+      Serial.print(data);
+      LCDprint(data);
+  }
+
+
   
   int X = analogRead(0);                           // 변수 X에 아날로그 0번핀에 입력되는 신호를 대입
   int Y = analogRead(1);                           // 변수 Y에 아날로그 1번핀에 입력되는 신호를 대입
@@ -45,23 +62,23 @@ void loop() {
   int buttonValue4 = digitalRead(4);
   int buttonValue5 = digitalRead(5);
 
-  // if (buttonValue2 == LOW) {                       // if문을 이용하여 각 버튼이 눌리면 알파벳이 시리얼모니터에 출력되도록 설정
-  //   String data = "front car!";
-  //   LCDprint(data);
-  // }
-  // if (buttonValue3 == LOW) {
-  //   String data = "front animal!";
-  //   LCDprint(data);
-  // }
-  // if (buttonValue4 == LOW) {
-  //   String data = "baby in car";
-  //   LCDprint(data);
-  // }
-  // if (buttonValue5 == LOW) {
-  //   String data = "broken car";
-  //   LCDprint(data);
-  // }
-  // delay(500);                                        // 0.5초동안 지속
+  if (buttonValue2 == LOW) {                       // if문을 이용하여 각 버튼이 눌리면 알파벳이 시리얼모니터에 출력되도록 설정
+    String data = "front car!";
+    LCDprint(data);
+  }
+  if (buttonValue3 == LOW) {
+    String data = "front animal!";
+    LCDprint(data);
+  }
+  if (buttonValue4 == LOW) {
+    String data = "baby in car";
+    LCDprint(data);
+  }
+  if (buttonValue5 == LOW) {
+    String data = "broken car";
+    LCDprint(data);
+  }
+  delay(500);                                        // 0.5초동안 지속
 }
 
 // /*
