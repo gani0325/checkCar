@@ -3,7 +3,6 @@
 // LiquidCrystal 라이브러리 추가
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
-#include "test2.h"
 
 // 조이스틱 쉴드의 버튼이 누르는 걸 입력받기 위해 선언
 const int buttonPin2 = 2;
@@ -45,15 +44,6 @@ void loop() {
   int buttonValue3 = digitalRead(3);
   int buttonValue4 = digitalRead(4);
   int buttonValue5 = digitalRead(5);
-
-  Serial.print(testnum);
-
-  if (flagCommand() == 1) {
-    int answer = 0;
-    answer = LCDmessage(answer);
-
-    Serial.print(answer);
-  }
 
   // if (buttonValue2 == LOW) {                       // if문을 이용하여 각 버튼이 눌리면 알파벳이 시리얼모니터에 출력되도록 설정
   //   String data = "front car!";

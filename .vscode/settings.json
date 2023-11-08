@@ -2,6 +2,7 @@
     "files.associations": {
         "button.h": "c",
         "arduino.h": "c",
-        "test2.h": "c"
+        "test2.h": "c",
+        "stdio.h": "c"
     }
 }
