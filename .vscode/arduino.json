@@ -1,6 +1,6 @@
 {
     "port": "/dev/ttyACM0",
     "board": "arduino:avr:uno",
-    "sketch": "server/mytest3/mytest3.ino",
-    "output" : "./build"
+    "sketch": "termios/termios.ino",
+    "output": "./build"
 }
