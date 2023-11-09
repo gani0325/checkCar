@@ -2,6 +2,7 @@
 
 // LiquidCrystal 라이브러리 추가
 #include <string.h>
+#include <stdio.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
@@ -14,8 +15,14 @@ const int buttonPin5 = 5;
 // lcd 객체 선언
 LiquidCrystal_I2C lcd(0x27, 16, 2);      // 주소, 열, 행
 
+// led 객체 선언
+int GREEN = 13;
+int RED = 11;
+int BLUE = 9;
+
 void setup() {
-  Serial.begin(9600);                               // 시리얼 통신을 시작하며, 통신속도는 9600
+  // 시리얼 통신을 시작하며, 통신속도는 9600
+  Serial.begin(9600);                               
 
   pinMode(buttonPin2, INPUT_PULLUP );
   pinMode(buttonPin3, INPUT_PULLUP );
@@ -25,6 +32,10 @@ void setup() {
   lcd.init();     // LCD 초기화
   // Print a message to the LCD
   lcd.backlight();        // LCD 백라이트 켜기
+
+  pinMode(RED, OUTPUT); 
+  pinMode(GREEN, OUTPUT);
+  pinMode(BLUE, OUTPUT);  
 }
 
 // LCD 출력
@@ -39,19 +50,20 @@ void LCDprint(String data) {
 void loop() {
 
   if(Serial.available()) {
-      char data[8];
+      char data[16] = {0,};
       char buf;
-      
-      for (int i = 0; i < 8; i++) {
+
+      for (int i = 0; i < 16; i++) {
           buf = Serial.read();
           //Serial.print("hi");
           data[i] = buf;
-          
       }
-      Serial.print(data);
+
+      //Serial.print(data);
       LCDprint(data);
+      delay(500);
   }
-  
+
   int X = analogRead(0);                           // 변수 X에 아날로그 0번핀에 입력되는 신호를 대입
   int Y = analogRead(1);                           // 변수 Y에 아날로그 1번핀에 입력되는 신호를 대입
 
@@ -76,5 +88,69 @@ void loop() {
     String data = "broken car";
     LCDprint(data);
   }
-  delay(500);                                        // 0.5초동안 지속
+
+  Serial.print(X);
+  Serial.print(", ");
+  Serial.println(Y);
+
+
+  if(X < 495) {
+    // 왼쪽
+    if(Y < 515) {
+      Serial.println('1');      
+      digitalWrite(GREEN, HIGH);     
+      digitalWrite(BLUE, LOW);     
+      digitalWrite(RED, HIGH);         //빨간불 끄기
+    }
+    else if(Y >= 515) {
+      Serial.println('1');
+      digitalWrite(GREEN, HIGH);     
+      digitalWrite(BLUE, HIGH);     
+      digitalWrite(RED, LOW);      
+    }
+  }
+
+  else if(X > 495) {
+    // 오른쪽
+    if(Y < 515) {
+      Serial.println('2');    
+      digitalWrite(GREEN, HIGH);     
+      digitalWrite(BLUE, LOW);     
+      digitalWrite(RED, HIGH);      
+    }
+    else if(Y >= 515) {
+      Serial.println('2');
+      digitalWrite(GREEN, HIGH);     
+      digitalWrite(BLUE, HIGH);     
+      digitalWrite(RED, LOW);      
+    }
+  }
+
+  else if(X == 495) {
+    // 후진
+    if(Y < 515) {
+      Serial.println('4');     
+      digitalWrite(GREEN, LOW);     
+      digitalWrite(BLUE, LOW);     
+      digitalWrite(RED, HIGH);      
+    }
+    // 전진
+    else if(Y > 515) {
+      Serial.println('3');
+      digitalWrite(GREEN, LOW);     
+      digitalWrite(BLUE, HIGH);     
+      digitalWrite(RED, LOW);      
+    }
+  }
+
+  
+  if (X == 495) {
+    if (Y == 515) {
+      digitalWrite(GREEN, LOW);     
+      digitalWrite(BLUE, LOW);     
+      digitalWrite(RED, LOW);  
+    }
+  }
+
+  delay(1000); 
 }
