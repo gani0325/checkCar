@@ -35,32 +35,90 @@ void loop()
   int Y = analogRead(1); // 변수 Y에 아날로그 1번핀에 입력되는 신호를 대입
 
   int buttonValue2 = digitalRead(2); // buttonValue값 선언 시그니처 디지털 pin
+
   int buttonValue3 = digitalRead(3);
   int buttonValue4 = digitalRead(4);
   int buttonValue5 = digitalRead(5);
 
-  char data[16];
-
-  if (buttonValue2 == LOW) // if문을 이용하여 각 버튼이 눌리면 알파벳이 시리얼모니터에 출력되도록 설정
-  { //버튼이 high상태로 pullup되었다가. 버튼을 누르면 low로 전압이 떨어지면서 데이터를 송신한다.
+  if (buttonValue2 == LOW) {                       // if문을 이용하여 각 버튼이 눌리면 알파벳이 시리얼모니터에 출력되도록 설정
     String data = "front car!";
-    lcd_print(data);
+    LCDprint(data);
   }
-  if (buttonValue3 == LOW)
-  {
+  if (buttonValue3 == LOW) {
     String data = "front animal!";
-    lcd_print(data);
+    LCDprint(data);
   }
-  if (buttonValue4 == LOW)
-  {
+  if (buttonValue4 == LOW) {
     String data = "baby in car";
-    lcd_print(data);
+    LCDprint(data);
   }
-  if (buttonValue5 == LOW)
-  {
+  if (buttonValue5 == LOW) {
     String data = "broken car";
-    lcd_print(data);
+    LCDprint(data);
   }
 
-  delay(500); // 0.5초동안 지속
+  Serial.print(X);
+  Serial.print(", ");
+  Serial.println(Y);
+
+
+  if(X < 495) {
+    // 왼쪽
+    if(Y < 515) {
+      Serial.println('1');      
+      digitalWrite(GREEN, HIGH);     
+      digitalWrite(BLUE, LOW);     
+      digitalWrite(RED, HIGH);         //빨간불 끄기
+    }
+    else if(Y >= 515) {
+      Serial.println('1');
+      digitalWrite(GREEN, HIGH);     
+      digitalWrite(BLUE, HIGH);     
+      digitalWrite(RED, LOW);      
+    }
+  }
+
+  else if(X > 495) {
+    // 오른쪽
+    if(Y < 515) {
+      Serial.println('2');    
+      digitalWrite(GREEN, HIGH);     
+      digitalWrite(BLUE, LOW);     
+      digitalWrite(RED, HIGH);      
+    }
+    else if(Y >= 515) {
+      Serial.println('2');
+      digitalWrite(GREEN, HIGH);     
+      digitalWrite(BLUE, HIGH);     
+      digitalWrite(RED, LOW);      
+    }
+  }
+
+  else if(X == 495) {
+    // 후진
+    if(Y < 515) {
+      Serial.println('4');     
+      digitalWrite(GREEN, LOW);     
+      digitalWrite(BLUE, LOW);     
+      digitalWrite(RED, HIGH);      
+    }
+    // 전진
+    else if(Y > 515) {
+      Serial.println('3');
+      digitalWrite(GREEN, LOW);     
+      digitalWrite(BLUE, HIGH);     
+      digitalWrite(RED, LOW);      
+    }
+  }
+
+  
+  if (X == 495) {
+    if (Y == 515) {
+      digitalWrite(GREEN, LOW);     
+      digitalWrite(BLUE, LOW);     
+      digitalWrite(RED, LOW);  
+    }
+  }
+
+  delay(1000); 
 }
