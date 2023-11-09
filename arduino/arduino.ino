@@ -15,8 +15,14 @@ const int buttonPin5 = 5;
 // lcd 객체 선언
 LiquidCrystal_I2C lcd(0x27, 16, 2);      // 주소, 열, 행
 
+// led 객체 선언
+int GREEN = 13;
+int RED = 11;
+int BLUE = 9;
+
 void setup() {
-  Serial.begin(9600);                               // 시리얼 통신을 시작하며, 통신속도는 9600
+  // 시리얼 통신을 시작하며, 통신속도는 9600
+  Serial.begin(9600);                               
 
   pinMode(buttonPin2, INPUT_PULLUP );
   pinMode(buttonPin3, INPUT_PULLUP );
@@ -26,6 +32,10 @@ void setup() {
   lcd.init();     // LCD 초기화
   // Print a message to the LCD
   lcd.backlight();        // LCD 백라이트 켜기
+
+  pinMode(RED, OUTPUT); 
+  pinMode(GREEN, OUTPUT);
+  pinMode(BLUE, OUTPUT);  
 }
 
 // LCD 출력
@@ -85,22 +95,62 @@ void loop() {
 
 
   if(X < 495) {
-    if(Y < 495) {
-      Serial.println('3');      
+    // 왼쪽
+    if(Y < 515) {
+      Serial.println('1');      
+      digitalWrite(GREEN, HIGH);     
+      digitalWrite(BLUE, LOW);     
+      digitalWrite(RED, HIGH);         //빨간불 끄기
     }
-    else if(Y > 515) {
+    else if(Y >= 515) {
       Serial.println('1');
-    }
-  }
-  else if(X > 515) {
-    if(Y < 495) {
-      Serial.println('4');      
-    }
-    else if(Y > 515) {
-      Serial.println('2');
+      digitalWrite(GREEN, HIGH);     
+      digitalWrite(BLUE, HIGH);     
+      digitalWrite(RED, LOW);      
     }
   }
 
-  delay(1000);               
-                           // 0.5초동안 지속
+  else if(X > 495) {
+    // 오른쪽
+    if(Y < 515) {
+      Serial.println('2');    
+      digitalWrite(GREEN, HIGH);     
+      digitalWrite(BLUE, LOW);     
+      digitalWrite(RED, HIGH);      
+    }
+    else if(Y >= 515) {
+      Serial.println('2');
+      digitalWrite(GREEN, HIGH);     
+      digitalWrite(BLUE, HIGH);     
+      digitalWrite(RED, LOW);      
+    }
+  }
+
+  else if(X == 495) {
+    // 후진
+    if(Y < 515) {
+      Serial.println('4');     
+      digitalWrite(GREEN, LOW);     
+      digitalWrite(BLUE, LOW);     
+      digitalWrite(RED, HIGH);      
+    }
+    // 전진
+    else if(Y > 515) {
+      Serial.println('3');
+      digitalWrite(GREEN, LOW);     
+      digitalWrite(BLUE, HIGH);     
+      digitalWrite(RED, LOW);      
+    }
+  }
+
+  
+  if (X == 495) {
+    if (Y == 515) {
+      digitalWrite(GREEN, LOW);     
+      digitalWrite(BLUE, LOW);     
+      digitalWrite(RED, LOW);  
+    }
+  }
+
+  delay(1000); 
 }
