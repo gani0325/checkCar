@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <stdint.h>
 #include "button.h"
 
@@ -9,7 +10,7 @@ enum state_t{
 typedef struct button_t{
 	int8_t digitalpin;
 	int8_t pinMode;
-	char button;
+	char clicked;
 }button_t;
 
 void* button_4new(){
@@ -21,22 +22,29 @@ void button_4ctor(button_t* obj, int8_t digitalpin, int8_t pinMode){
 	obj->digitalpin = digitalpin;
 	
 	pinMode_CPP(digitalpin, pinMode);
+	//pinMode(obj->digitalpin, obj->pinMode);
+}
+
+void button_4ctor2(button_t* obj){
+
+	pinMode(obj->digitalpin, obj->pinMode);
 }
 
 char button_digitalRead(button_t* obj){
-	obj->button = 'E';
+	obj->clicked = 'E';
 	const int16_t low = get_LOW_CPP();
 	const int16_t high = get_HIGH_CPP();
 	digitalRead_CPP(obj);
-		if(digitalRead_CPP(obj)==high){
-			return obj->button ='A';
-		}else if(digitalRead_CPP(obj)==high){
-			return obj->button ='B';
-		}else if(digitalRead_CPP(obj)==high){
-			return obj->button ='C';
-		}else if(digitalRead_CPP(obj)==high){
-			return obj->button ='D';
+	digitalRead(obj->digitalpin);
+		if(digitalRead_CPP(obj)==low){
+			return obj->clicked ='A';
+		}else if(digitalRead_CPP(obj)==low){
+			return obj->clicked ='B';
+		}else if(digitalRead_CPP(obj)==low){
+			return obj->clicked ='C';
+		}else if(digitalRead_CPP(obj)==low){
+			return obj->clicked ='D';
 		}
-	return obj->button = 'E';
+	return obj->clicked = 'E';
 }
 
