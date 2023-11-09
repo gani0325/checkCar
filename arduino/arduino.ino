@@ -2,6 +2,7 @@
 
 // LiquidCrystal 라이브러리 추가
 #include <string.h>
+#include <stdio.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
@@ -39,19 +40,20 @@ void LCDprint(String data) {
 void loop() {
 
   if(Serial.available()) {
-      char data[8];
+      char data[16] = {0,};
       char buf;
-      
-      for (int i = 0; i < 8; i++) {
+
+      for (int i = 0; i < 16; i++) {
           buf = Serial.read();
           //Serial.print("hi");
           data[i] = buf;
-          
       }
-      Serial.print(data);
+
+      //Serial.print(data);
       LCDprint(data);
+      delay(500);
   }
-  
+
   int X = analogRead(0);                           // 변수 X에 아날로그 0번핀에 입력되는 신호를 대입
   int Y = analogRead(1);                           // 변수 Y에 아날로그 1번핀에 입력되는 신호를 대입
 
@@ -76,5 +78,29 @@ void loop() {
     String data = "broken car";
     LCDprint(data);
   }
-  delay(500);                                        // 0.5초동안 지속
+
+  Serial.print(X);
+  Serial.print(", ");
+  Serial.println(Y);
+
+
+  if(X < 495) {
+    if(Y < 495) {
+      Serial.println('3');      
+    }
+    else if(Y > 515) {
+      Serial.println('1');
+    }
+  }
+  else if(X > 515) {
+    if(Y < 495) {
+      Serial.println('4');      
+    }
+    else if(Y > 515) {
+      Serial.println('2');
+    }
+  }
+
+  delay(1000);               
+                           // 0.5초동안 지속
 }
