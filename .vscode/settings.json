@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "limits": "cpp"
+        "button.h": "c",
+        "arduino.h": "c"
     }
 }

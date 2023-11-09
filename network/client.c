@@ -88,6 +88,7 @@ int main(int argc, char *argv[])
    }
 
    // ----------- 1. Create socket object ------------------
+
    // socket() : socket 생성 & socket discriptor
    sock = socket(PF_INET, SOCK_STREAM, 0);
    if (sock == -1)

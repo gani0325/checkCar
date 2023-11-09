@@ -1,73 +1,41 @@
-// mytest3.ino
-
-// LiquidCrystal 라이브러리 추가
-#include <string.h>
-#include <stdio.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
+#include "joystick.h"
+#include "button.h"
 
 // 조이스틱 쉴드의 버튼이 누르는 걸 입력받기 위해 선언
-const int buttonPin2 = 2;
-const int buttonPin3 = 3;
-const int buttonPin4 = 4;
-const int buttonPin5 = 5;
 
 // lcd 객체 선언
-LiquidCrystal_I2C lcd(0x27, 16, 2);      // 주소, 열, 행
+LiquidCrystal_I2C lcd(0x27, 16, 2); // 주소, 열, 행
+// joystick 객체 생성
+joystick_t *joystick;
 
-// led 객체 선언
-int GREEN = 13;
-int RED = 11;
-int BLUE = 9;
-
-void setup() {
-  // 시리얼 통신을 시작하며, 통신속도는 9600
-  Serial.begin(9600);                               
-
-  pinMode(buttonPin2, INPUT_PULLUP );
-  pinMode(buttonPin3, INPUT_PULLUP );
-  pinMode(buttonPin4, INPUT_PULLUP );
-  pinMode(buttonPin5, INPUT_PULLUP );
-
-  lcd.init();     // LCD 초기화
+void setup()
+{
+  Serial.begin(9600);                      // 시리얼 통신을 시작하며, 통신속도는 9600
+  joystick = (joystick_t *)joystick_new(); // joystick 객체 메모리 할당
+  joystick_ctor(joystick);                 // joystick 객체 시그니처로 생성자 함수안에 pin과 pinMode할당이 있다.
+  lcd.init();                              // LCD 초기화
   // Print a message to the LCD
-  lcd.backlight();        // LCD 백라이트 켜기
-
-  pinMode(RED, OUTPUT); 
-  pinMode(GREEN, OUTPUT);
-  pinMode(BLUE, OUTPUT);  
+  lcd.backlight(); // LCD 백라이트 켜기
 }
 
-// LCD 출력
-void LCDprint(String data) {
-  lcd.setCursor(0, 0);    // 1번째, 1라인
+void lcd_print(String data)
+{
+  lcd.setCursor(0, 0); // 1번째, 1라인에 커서 두기
   lcd.print(data);
   delay(1500);
 
-  lcd.clear();            // 글자를 모두 지워라
+  lcd.clear(); // 글자를 모두 지워라
 }
 
-void loop() {
+void loop()
+{
+  int X = analogRead(0); // 변수 X에 아날로그 0번핀에 입력되는 신호를 대입
+  int Y = analogRead(1); // 변수 Y에 아날로그 1번핀에 입력되는 신호를 대입
 
-  if(Serial.available()) {
-      char data[16] = {0,};
-      char buf;
+  int buttonValue2 = digitalRead(2); // buttonValue값 선언 시그니처 디지털 pin
 
-      for (int i = 0; i < 16; i++) {
-          buf = Serial.read();
-          //Serial.print("hi");
-          data[i] = buf;
-      }
-
-      //Serial.print(data);
-      LCDprint(data);
-      delay(500);
-  }
-
-  int X = analogRead(0);                           // 변수 X에 아날로그 0번핀에 입력되는 신호를 대입
-  int Y = analogRead(1);                           // 변수 Y에 아날로그 1번핀에 입력되는 신호를 대입
-
-  int buttonValue2 = digitalRead(2);               // buttonValue값 선언
   int buttonValue3 = digitalRead(3);
   int buttonValue4 = digitalRead(4);
   int buttonValue5 = digitalRead(5);

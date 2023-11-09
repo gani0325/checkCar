@@ -5,17 +5,29 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 
+<<<<<<< HEAD
+#include <termios.h>
+
+#define BUF_SIZE 1024
+=======
 #define BUF_SIZE 16
+>>>>>>> dev
 void error_handling(char *message);
 
 int main(int argc, char *argv[])
 {
+<<<<<<< HEAD
+=======
    // 서버, 클라이언트 소켓 파일디스크립터 변수 선언
+>>>>>>> dev
    int serv_sock, clnt_sock;
    char message[BUF_SIZE];
    int str_len, i;
 
+<<<<<<< HEAD
+=======
    // sockaddr_in 구조체 변수 선언
+>>>>>>> dev
    struct sockaddr_in serv_adr, clnt_adr;
    socklen_t clnt_adr_sz;
 
@@ -24,6 +36,7 @@ int main(int argc, char *argv[])
       printf("Usage : %s <port>\n", argv[0]);
       exit(1);
    }
+
 
    // ----------- 1. Create socket object ------------------
    // socket() : socket 생성 & socket discriptor
@@ -46,6 +59,7 @@ int main(int argc, char *argv[])
       error_handling("bind() error");
 
    // ----------- 3. Prepare backlog ------------------
+
    // listen()으로 서버소켓으로 오는 클라이언트 요청 대기
    if(listen(serv_sock, 5) == -1)
       error_handling("listen() error");
@@ -57,6 +71,7 @@ int main(int argc, char *argv[])
       printf("Listen....\n");
       
       // ----------- 4. Start accepting clients ---------
+
       // 클라이언트 접속 요청 대기 및 수락, 클라이언트와의 통신을 위한 새 socket 생성
       clnt_sock = accept(serv_sock, (struct sockaddr*)&clnt_adr, &clnt_adr_sz);
       if(clnt_sock == -1)
