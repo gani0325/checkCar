@@ -12,7 +12,7 @@ int main(void)
 {
 	struct termios newtio;
 	int ttyfd;
- 	char *ttyname = "/dev/ttyS0";
+ 	char *ttyname = "/dev/ttyACM0";
 	ttyfd = open(ttyname, O_RDWR | O_NOCTTY);
 	
 	if(ttyfd < 0)

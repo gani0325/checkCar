@@ -6,7 +6,6 @@ typedef struct button_t
 	int8_t digitalpin; // digitalpin 변수
 	int8_t pin_mode;   // pin_mode 변수
 } button_t;
-
 void *button_4new()
 {											 // 4개의 버튼의 객체가 생성되었다.
 	return (void *)malloc(sizeof(button_t)); // 메모리 할당
