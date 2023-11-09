@@ -8,7 +8,7 @@
 #include <fcntl.h>
 #include <termios.h>
 
-#define BUF_SIZE 8
+#define BUF_SIZE 16
 void error_handling(char *message);
 
 typedef struct
@@ -75,7 +75,7 @@ ssize_t serial_write(SerialPort *port, char *buffer, size_t size)
 int main(int argc, char *argv[])
 {
    int sock;
-   char message[BUF_SIZE];
+   char message[BUF_SIZE] = {0, };
    int str_len;
 
    // sockaddr_in 구조체 변수 선언
@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
       // 클라이언트로부터 전송된 자료 수신한다
       // read(int fd, void *buff, size_t nbytes)
       str_len = read(sock, message, BUF_SIZE - 1);
-      message[str_len] = 0;    
+      message[str_len] = 0;
 
       printf("Message form server : %s", message);
 
