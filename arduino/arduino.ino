@@ -20,9 +20,14 @@ void setup()
   Serial.begin(9600);                      // 시리얼 통신을 시작하며, 통신속도는 9600
   joystick = (joystick_t *)joystick_new(); // joystick 객체 메모리 할당
   joystick_ctor(joystick);                 // joystick 객체 시그니처로 생성자 함수안에 pin과 pinMode할당이 있다.
-  lcd.init();                              // LCD 초기화
+  
+  lcd.init();     // LCD 초기화
   // Print a message to the LCD
-  lcd.backlight(); // LCD 백라이트 켜기
+  lcd.backlight();        // LCD 백라이트 켜기
+
+  pinMode(RED, OUTPUT); 
+  pinMode(GREEN, OUTPUT);
+  pinMode(BLUE, OUTPUT);  
 }
 
 void LCDprint(String data)
@@ -34,8 +39,23 @@ void LCDprint(String data)
   lcd.clear(); // 글자를 모두 지워라
 }
 
-void loop()
-{
+void loop() {
+
+  if(Serial.available()) {
+      char data[16] = {0,};
+      char buf;
+
+      for (int i = 0; i < 16; i++) {
+          buf = Serial.read();
+          //Serial.print("hi");
+          data[i] = buf;
+      }
+
+      //Serial.print(data);
+      LCDprint(data);
+      delay(500);
+  }
+
   int X = analogRead(0); // 변수 X에 아날로그 0번핀에 입력되는 신호를 대입
   int Y = analogRead(1); // 변수 Y에 아날로그 1번핀에 입력되는 신호를 대입
 
@@ -61,11 +81,6 @@ void loop()
     String data = "broken car";
     LCDprint(data);
   }
-
-  Serial.print(X);
-  Serial.print(", ");
-  Serial.println(Y);
-
 
   if(X < 495) {
     // 왼쪽
