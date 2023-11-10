@@ -67,7 +67,7 @@ extern "C"         // 컴파일러에서 C언어가 컴파일 되도록 하는 �
 
 ### 👨‍💻 3. 다이어그램
 ```jsx
-								  			 arduino_main() ----Serial--- client_main() -----TCP-----server_main()
+			arduino_main() ----Serial--- client_main() -----TCP-----server_main()
                               |                            |                         |
                               |                            |                         |
                         button_click()                     |                         |
