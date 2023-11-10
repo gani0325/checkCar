@@ -1,5 +1,12 @@
 #pragma once
-struct button_t;
+typedef struct button_t
+{					   // button 구조체
+	int16_t digitalpin; // digitalpin 변수
+	int16_t pin_mode;   // pin_mode 변수
+	int16_t pin_status;
+	char button_name;
+} button_t;
+
 #ifdef __cplusplus // avr-gcc컴파일러가 c++를 컴파일 할 때 다음과 같이 해라.
 extern "C"         // 컴파일러에서 C언어가 컴파일 되도록 하는 코드
 {

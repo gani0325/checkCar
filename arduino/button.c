@@ -2,12 +2,7 @@
 #include <Arduino.h>
 #include "button.h"
 
-typedef struct button_t
-{					   // button 구조체
-	int16_t digitalpin; // digitalpin 변수
-	int16_t pin_mode;   // pin_mode 변수
-	int16_t pin_status;
-} button_t;
+
 
 //unsigned long current_time = millis();
 
