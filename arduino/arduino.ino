@@ -39,8 +39,9 @@ void loop()
   int X = analogRead(0); // 변수 X에 아날로그 0번핀에 입력되는 신호를 대입
   int Y = analogRead(1); // 변수 Y에 아날로그 1번핀에 입력되는 신호를 대입
 
-  int buttonValue2 = digitalRead(2); // buttonValue값 선언 시그니처 디지털 pin
+  //char clicked_button = joystick_digitalRead(joystick);
 
+  int buttonValue2 = digitalRead(2); // buttonValue값 선언 시그니처 디지털 pin
   int buttonValue3 = digitalRead(3);
   int buttonValue4 = digitalRead(4);
   int buttonValue5 = digitalRead(5);
