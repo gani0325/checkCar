@@ -5,8 +5,8 @@ extern "C"         // 컴파일러에서 C언어가 컴파일 되도록 하는 �
 {
 #endif
     void *button_4new(); // button_t 객체할당
-    void button_4ctor(struct button_t *, int8_t, int8_t);
-
+    void button_4ctor(struct button_t *, int16_t, int16_t);
+    int16_t clicked_button(struct button_t*);
 #ifdef __cplusplus
 }
 #endif
