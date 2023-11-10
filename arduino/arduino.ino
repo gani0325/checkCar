@@ -10,6 +10,11 @@ LiquidCrystal_I2C lcd(0x27, 16, 2); // 주소, 열, 행
 // joystick 객체 생성
 joystick_t *joystick;
 
+// led 객체 선언
+int GREEN = 13;
+int RED = 11;
+int BLUE = 9;
+
 void setup()
 {
   Serial.begin(9600);                      // 시리얼 통신을 시작하며, 통신속도는 9600
@@ -20,7 +25,7 @@ void setup()
   lcd.backlight(); // LCD 백라이트 켜기
 }
 
-void lcd_print(String data)
+void LCDprint(String data)
 {
   lcd.setCursor(0, 0); // 1번째, 1라인에 커서 두기
   lcd.print(data);
