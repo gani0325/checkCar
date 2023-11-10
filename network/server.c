@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
       exit(1);
    }
 
+
    // ----------- 1. Create socket object ------------------
    // socket() : socket 생성 & socket discriptor
    serv_sock = socket(PF_INET, SOCK_STREAM, 0);
@@ -46,6 +47,7 @@ int main(int argc, char *argv[])
       error_handling("bind() error");
 
    // ----------- 3. Prepare backlog ------------------
+
    // listen()으로 서버소켓으로 오는 클라이언트 요청 대기
    if(listen(serv_sock, 5) == -1)
       error_handling("listen() error");
@@ -57,6 +59,7 @@ int main(int argc, char *argv[])
       printf("Listen....\n");
       
       // ----------- 4. Start accepting clients ---------
+
       // 클라이언트 접속 요청 대기 및 수락, 클라이언트와의 통신을 위한 새 socket 생성
       clnt_sock = accept(serv_sock, (struct sockaddr*)&clnt_adr, &clnt_adr_sz);
       if(clnt_sock == -1)
