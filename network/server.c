@@ -5,29 +5,17 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 
-<<<<<<< HEAD
-#include <termios.h>
-
-#define BUF_SIZE 1024
-=======
 #define BUF_SIZE 16
->>>>>>> dev
 void error_handling(char *message);
 
 int main(int argc, char *argv[])
 {
-<<<<<<< HEAD
-=======
    // 서버, 클라이언트 소켓 파일디스크립터 변수 선언
->>>>>>> dev
    int serv_sock, clnt_sock;
    char message[BUF_SIZE];
    int str_len, i;
 
-<<<<<<< HEAD
-=======
    // sockaddr_in 구조체 변수 선언
->>>>>>> dev
    struct sockaddr_in serv_adr, clnt_adr;
    socklen_t clnt_adr_sz;
 
