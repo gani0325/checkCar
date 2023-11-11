@@ -24,22 +24,18 @@ void joystick_ctor(joystick_t *joystick_obj) // joystick 객체를 시그니처�
 		joystick_obj->but[index] = button_4new(); // 배열 하나에 버튼 1개에 대한 하나의 button객체 메모리할당. button객체 생성
 		if (index == 0)
 		{
-			//(button_t*)(joystick_obj->but[0])->button_name;
 			joystick_obj->but[0]->button_name = 'A';
 		}
 		else if (index == 1)
 		{
-			// joystick_obj->button_name = 'B';
 			joystick_obj->but[1]->button_name = 'B';
 		}
 		else if (index == 2)
 		{
-			// joystick_obj->button_name = 'C';
 			joystick_obj->but[2]->button_name = 'C';
 		}
 		else if (index == 3)
 		{
-			// joystick_obj->button_name = 'D';
 			joystick_obj->but[3]->button_name = 'D';
 		}
 		button_4ctor(joystick_obj->but[index], pin, INPUT_PULLUP); // button객체에 pin과 pinMode할당
@@ -58,17 +54,14 @@ char joystick_digitalRead(joystick_t *joystick_obj)
 	}
 	else if (pin_status[1] == LOW)
 	{
-		// return joystick_obj->button_name;
 		 return joystick_obj->but[1]->button_name;
 	}
 	else if (pin_status[2] == LOW)
 	{
-		// return joystick_obj->button_name;
 		 return joystick_obj->but[2]->button_name;
 	}
 	else if (pin_status[3] == LOW)
 	{
-		// return joystick_obj->button_name;
 		 return joystick_obj->but[3]->button_name;
 	}
 

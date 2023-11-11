@@ -11,9 +11,9 @@ LiquidCrystal_I2C lcd(0x27, 16, 2); // 주소, 열, 행
 joystick_t *joystick;
 //millis()
 // led 객체 선언
-int GREEN = 13;
+int GREEN = 10;
 int RED = 11;
-int BLUE = 9;
+int BLUE = 12;
 
 void setup()
 {
@@ -28,6 +28,8 @@ void setup()
   pinMode(RED, OUTPUT);
   pinMode(GREEN, OUTPUT);
   pinMode(BLUE, OUTPUT);
+
+ 
 }
 
 void LCDprint(String data)
@@ -64,8 +66,8 @@ void loop()
 
   int X = analogRead(0); // 변수 X에 아날로그 0번핀에 입력되는 신호를 대입
   int Y = analogRead(1); // 변수 Y에 아날로그 1번핀에 입력되는 신호를 대입
-  pinMode(0, INPUT);
-  pinMode(1, INPUT);
+  // pinMode(0, INPUT);
+  // pinMode(1, INPUT);
   char clicked_button = 'E';
  
  
@@ -75,11 +77,6 @@ void loop()
 
   clicked_button = joystick_digitalRead(joystick);
   Serial.print(clicked_button);
-  // int buttonValue2 = digitalRead(2); // buttonValue값 선언 시그니처 디지털 pin
-  // int buttonValue3 = digitalRead(3);
-  // int buttonValue4 = digitalRead(4);
-  // int buttonValue5 = digitalRead(5);
-
   
   if (clicked_button == 'A')
   { // if문을 이용하여 각 버튼이 눌리면 알파벳이 시리얼모니터에 출력되도록 설정
@@ -108,72 +105,102 @@ void loop()
   Serial.print("Y");
   Serial.print(":");
   Serial.print(Y);
-  // if (X < 495)
-  // {
-  //   // 왼쪽
-  //   if (Y < 515)
-  //   {
-  //     digitalWrite(GREEN, HIGH);
-  //     digitalWrite(BLUE, LOW);
-  //     digitalWrite(RED, HIGH); // 빨간불 끄기
-  //   }
-  //   else if (Y >= 515)
-  //   {
+  
+  
+  if (X < 493)
+  {
+    // 왼쪽
+    if (Y < 515)
+    {
+      // digitalWrite(GREEN, HIGH);
+      // digitalWrite(BLUE, LOW);
+      // digitalWrite(RED, HIGH); // 빨간불 끄기
 
-  //     digitalWrite(GREEN, HIGH);
-  //     digitalWrite(BLUE, HIGH);
-  //     digitalWrite(RED, LOW);
-  //   }
-  // }
+      digitalWrite(GREEN, LOW);
+      digitalWrite(BLUE, LOW);
+      digitalWrite(RED, HIGH);
+    }
+    else if (Y >= 515)
+    {
 
-  // else if (X > 495)
-  // {
-  //   // 오른쪽
-  //   if (Y < 515)
-  //   {
+      // digitalWrite(GREEN, HIGH);
+      // digitalWrite(BLUE, HIGH);
+      // digitalWrite(RED, LOW);
 
-  //     digitalWrite(GREEN, HIGH);
-  //     digitalWrite(BLUE, LOW);
-  //     digitalWrite(RED, HIGH);
-  //   }
-  //   else if (Y >= 515)
-  //   {
+      
+      digitalWrite(GREEN, LOW);
+      digitalWrite(BLUE, LOW);
+      digitalWrite(RED, HIGH);
+    }
+  }
 
-  //     digitalWrite(GREEN, HIGH);
-  //     digitalWrite(BLUE, HIGH);
-  //     digitalWrite(RED, LOW);
-  //   }
-  // }
+  else if (X > 493)
+  {
+    // 오른쪽
+    if (Y < 515)
+    {
 
-  // else if (X == 495)
-  // {
-  //   // 후진
-  //   if (Y < 515)
-  //   {
+      // digitalWrite(GREEN, HIGH);
+      // digitalWrite(BLUE, LOW);
+      // digitalWrite(RED, HIGH);
 
-  //     digitalWrite(GREEN, LOW);
-  //     digitalWrite(BLUE, LOW);
-  //     digitalWrite(RED, HIGH);
-  //   }
-  //   // 전진
-  //   else if (Y > 515)
-  //   {
+      analogWrite(RED, 0);  
+      analogWrite(GREEN, 255); // GREEN ON
+      analogWrite(BLUE, 0);  
+    }
+    else if (Y >= 515)
+    {
 
-  //     digitalWrite(GREEN, LOW);
-  //     digitalWrite(BLUE, HIGH);
-  //     digitalWrite(RED, LOW);
-  //   }
-  // }
+      // digitalWrite(GREEN, HIGH);
+      // digitalWrite(BLUE, HIGH);
+      // digitalWrite(RED, LOW);
 
-  // if (X == 495)
-  // {
-  //   if (Y == 515)
-  //   {
-  //     // digitalWrite(GREEN, LOW);
-  //     // digitalWrite(BLUE, LOW);
-  //     // digitalWrite(RED, LOW);
-  //   }
-  // }
+      analogWrite(RED, 0);  
+      analogWrite(GREEN, 255); // GREEN ON
+      analogWrite(BLUE, 0); 
+    }
+  }
 
-  //delay(1000);
+  else if (X == 493)
+  {
+    // 후진
+    if (Y < 515)
+    {
+
+      // digitalWrite(GREEN, LOW);
+      // digitalWrite(BLUE, LOW);
+      // digitalWrite(RED, HIGH);
+
+      analogWrite(RED, 0);
+      analogWrite(GREEN, 0);
+      analogWrite(BLUE, 255);  
+    }
+    // 전진
+    else if (Y > 515)
+    {
+
+      // digitalWrite(GREEN, LOW);
+      // digitalWrite(BLUE, HIGH);
+      // digitalWrite(RED, LOW);
+
+      analogWrite(RED, 0);
+      analogWrite(GREEN, 0);
+      analogWrite(BLUE, 255);  
+    }
+  }
+
+  if (X == 493)
+  {
+    if (Y == 515)
+    {
+      // digitalWrite(GREEN, LOW);
+      // digitalWrite(BLUE, LOW);
+      // digitalWrite(RED, LOW);
+
+      analogWrite(RED, 0);
+      analogWrite(GREEN, 0);
+      analogWrite(BLUE, 0); 
+    }
+  }
+
 }
