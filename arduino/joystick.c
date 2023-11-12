@@ -10,7 +10,6 @@ typedef struct joystick_t
 {
 	struct button_t *but[5]; // 버튼 4개의 주소 배열에 할당. 마지막index는 빈 return 값을 받기위함.
 	struct xystick_t *xystick;
-	struct lcd_t *lcd;
 } joystick_t;
 
 char selected_button;
