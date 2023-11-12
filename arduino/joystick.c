@@ -3,6 +3,7 @@
 #include "joystick.h"
 #include "button.h"
 #include "xystick.h"
+#include "led.h"
 
 typedef struct joystick_t
 {
@@ -14,6 +15,32 @@ char selected_button;
 uint8_t pin_status[4];
 int* joystick_XYaxis_value[2];
 
+void joystick_control(joystick_t* joystick_obj){
+	joystick_XYaxis_value[X_PIN_INDEX]=xstick_analogRead(joystick_obj->xystick);
+	joystick_XYaxis_value[Y_PIN_INDEX]=ystick_analogRead(joystick_obj->xystick);
+
+	if(joystick_XYaxis_value[X_PIN_INDEX]==493){
+		if(joystick_XYaxis_value[Y_PIN_INDEX]>515){
+			joystick_XYstick_forward(joystick_obj->xystick);
+		}
+	}
+	if(joystick_XYaxis_value[X_PIN_INDEX]==493){
+		if(joystick_XYaxis_value[Y_PIN_INDEX]<515){
+			joystick_XYstick_back(joystick_obj->xystick);
+		}
+	}
+	if(joystick_XYaxis_value[X_PIN_INDEX]<493){
+		joystick_XYstick_left(joystick_obj->xystick);
+	}
+	if(joystick_XYaxis_value[X_PIN_INDEX]>493){
+		joystick_XYstick_right(joystick_obj->xystick);
+	} 
+	if(joystick_XYaxis_value[X_PIN_INDEX]==493){
+		if(joystick_XYaxis_value[Y_PIN_INDEX]==515){
+			joystick_XYstick_fixed(joystick_obj->xystick);
+		}
+	} 
+}
 
 void *joystick_new()
 {
@@ -73,7 +100,7 @@ char joystick_digitalRead(joystick_t *joystick_obj)
 	return 'E';
 }
 int* joystick_get_XYaxisvalue(joystick_t* joystick_obj){
-	joystick_XYaxis_value[X_PIN_INDEX]=xstick_analogRead(joystick_obj->xystick, X_PIN_INDEX);
-	joystick_XYaxis_value[Y_PIN_INDEX]=ystick_analogRead(joystick_obj->xystick, Y_PIN_INDEX);
+	joystick_XYaxis_value[X_PIN_INDEX]=xstick_analogRead(joystick_obj->xystick);
+	joystick_XYaxis_value[Y_PIN_INDEX]=ystick_analogRead(joystick_obj->xystick);
 	return joystick_XYaxis_value;
 }
