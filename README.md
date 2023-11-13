@@ -41,33 +41,32 @@
 - 객체지향 만들기
     - 객체 joystick과 button 합성관계를 이용해 pin과 pinMode부분 캡슐화, 아두이노와 C와 C++ 통합구현
 ```
-//joystick.h
-#pragma once       // h파일 반복 제어
-struct joystick_t; // joystick 객체 전방선언
+//arduino.ino
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <Arduino.h>
+#include "joystick.h"
+#include "button.h"
+#include "xystick.h"
+#include "led.h"
+#include "lcd.h"
 
-#ifdef __cplusplus // 컴파일러가 g++이면 다음과 같이 해라.
-extern "C"         // g++컴파일러에서 C언어가 컴파일 되도록 하는 코드
+// joystick 객체 생성
+joystick_t *joystick;   
+
+void setup()
 {
-#endif
-    void *joystick_new();                    // : joystick객체 할당
-    void joystick_ctor(struct joystick_t *); // 조이스틱 객체생성자, pin과 pinMode 할당이 함수 실행.
-#ifdef __cplusplus                           // 컴파일러가 g++이면 다음과 같이 해라.
+  Serial.begin(9600);    // 시리얼 통신을 시작하며, 통신속도는 9600
+  //joystick 생성
+  joystick = (joystick_t *)joystick_new(); // joystick 객체 메모리 할당
+  joystick_ctor(joystick);                 // joystick 객체 시그니처로 생성자 함수안에 pin과 pinMode할당이 있다.
 }
-#endif
 
-//button.h
-#pragma once
-struct button_t;
-#ifdef __cplusplus // avr-gcc컴파일러가 c++를 컴파일 할 때 다음과 같이 해라.
-extern "C"         // 컴파일러에서 C언어가 컴파일 되도록 하는 코드
+void loop()
 {
-#endif
-    void *button_4new(); // button_t 객체할당
-    void button_4ctor(struct button_t *, int8_t, int8_t);
-
-#ifdef __cplusplus
+  joystick_control(joystick);
+  joystick_lcd_print(joystick);
 }
-#endif
 ```
 
 - 회의록
@@ -355,161 +354,144 @@ extern "C"         // 컴파일러에서 C언어가 컴파일 되도록 하는 �
     
 - **arduino**
     ```arduino
-    // mytest3.ino
+    //joystick.c
+#include <stdint.h> //int x비트 같은 자료형을 쓰기위해서
+#include <Arduino.h>
+#include "joystick.h"
+#include "button.h"
+#include "xystick.h"
+#include "led.h"
+#include "lcd.h"
 
-    // LiquidCrystal 라이브러리 추가
-    #include <string.h>
-    #include <stdio.h>
-    #include <Wire.h>
-    #include <LiquidCrystal_I2C.h>
+typedef struct joystick_t
+{
+	struct button_t *but[5]; // 버튼 4개의 주소 배열에 할당. 마지막index는 빈 return 값을 받기위함.
+	struct xystick_t *xystick;
+} joystick_t;
 
-    // 조이스틱 쉴드의 버튼이 누르는 걸 입력받기 위해 선언
-    const int buttonPin2 = 2;
-    const int buttonPin3 = 3;
-    const int buttonPin4 = 4;
-    const int buttonPin5 = 5;
+char selected_button;
+uint8_t pin_status[4];
+int *joystick_XYaxis_value[2];
+char data[COLUMN + 1];
 
-    // lcd 객체 선언
-    LiquidCrystal_I2C lcd(0x27, 16, 2);      // 주소, 열, 행
+void *joystick_new()
+{
+	return (void *)malloc(sizeof(joystick_t));
+}
 
-    // led 객체 선언
-    int GREEN = 13;
-    int RED = 11;
-    int BLUE = 9;
+void joystick_ctor(joystick_t *joystick_obj) // joystick 객체를 시그니처로 받음 받은 객체는 모두 obj로 명칭
+{
+	for (uint8_t pin = 2, index = 0; pin < 6; pin++, index++) // 배열을 하나씩 반복하며 pin과 pinMode 초기화
+	{
+		joystick_obj->but[index] = button_4new(); // 배열 하나에 버튼 1개에 대한 하나의 button객체 메모리할당. button객체 생성
+		if (index == 0)
+		{
+			joystick_obj->but[index]->button_name = 'A';
+		}
+		else if (index == 1)
+		{
+			joystick_obj->but[index]->button_name = 'B';
+		}
+		else if (index == 2)
+		{
+			joystick_obj->but[index]->button_name = 'C';
+		}
+		else if (index == 3)
+		{
+			joystick_obj->but[index]->button_name = 'D';
+		}
+		button_4ctor(joystick_obj->but[index], pin, INPUT_PULLUP); // button객체에 pin과 pinMode할당
+	}
+	joystick_obj->xystick = xystick_new();
+	lcd_init();
+}
 
-    void setup() {
-    // 시리얼 통신을 시작하며, 통신속도는 9600
-    Serial.begin(9600);                               
+void joystick_lcd_print(joystick_t* joystick_obj)
+{
+	char clicked_button = 'E'; // 초기화
+	clicked_button = joystick_digitalRead(joystick_obj);
+	if (clicked_button == 'A')
+	{ // if문을 이용하여 각 버튼이 눌리면 알파벳이 시리얼모니터에 출력되도록 설정
+		char data[COLUMN + 1] = "front car!";
+		lcd_print(data);
+	}
+	if (clicked_button == 'B')
+	{
+		char data[COLUMN + 1] = "front animal!";
+		lcd_print(data);
+	}
+	if (clicked_button == 'C')
+	{
+		char data[COLUMN + 1] = "baby in car";
+		lcd_print(data);
+	}
+	if (clicked_button == 'D')
+	{
+		char data[COLUMN + 1] = "broken car";
+		lcd_print(data);
+	}
+};
 
-    pinMode(buttonPin2, INPUT_PULLUP );
-    pinMode(buttonPin3, INPUT_PULLUP );
-    pinMode(buttonPin4, INPUT_PULLUP );
-    pinMode(buttonPin5, INPUT_PULLUP );
+char joystick_digitalRead(joystick_t *joystick_obj)
+{
+	for (int index = 0; index < 4; index++)
+	{
+		pin_status[index] = clicked_button(joystick_obj->but[index]);
+	}
+	if (pin_status[0] == LOW)
+	{
+		return joystick_obj->but[0]->button_name;
+	}
+	else if (pin_status[1] == LOW)
+	{
+		return joystick_obj->but[1]->button_name;
+	}
+	else if (pin_status[2] == LOW)
+	{
+		return joystick_obj->but[2]->button_name;
+	}
+	else if (pin_status[3] == LOW)
+	{
+		return joystick_obj->but[3]->button_name;
+	}
+	return 'E';
+}
 
-    lcd.init();     // LCD 초기화
-    // Print a message to the LCD
-    lcd.backlight();        // LCD 백라이트 켜기
+void joystick_control(joystick_t *joystick_obj)
+{
+	joystick_XYaxis_value[X_PIN_INDEX] = xstick_analogRead(joystick_obj->xystick);
+	joystick_XYaxis_value[Y_PIN_INDEX] = ystick_analogRead(joystick_obj->xystick);
 
-    pinMode(RED, OUTPUT); 
-    pinMode(GREEN, OUTPUT);
-    pinMode(BLUE, OUTPUT);  
-    }
-
-    // LCD 출력
-    void LCDprint(String data) {
-    lcd.setCursor(0, 0);    // 1번째, 1라인
-    lcd.print(data);
-    delay(1500);
-
-    lcd.clear();            // 글자를 모두 지워라
-    }
-
-    void loop() {
-
-    if(Serial.available()) {
-        char data[16] = {0,};
-        char buf;
-
-        for (int i = 0; i < 16; i++) {
-            buf = Serial.read();
-            //Serial.print("hi");
-            data[i] = buf;
-        }
-
-        //Serial.print(data);
-        LCDprint(data);
-        delay(500);
-    }
-
-    int X = analogRead(0);                           // 변수 X에 아날로그 0번핀에 입력되는 신호를 대입
-    int Y = analogRead(1);                           // 변수 Y에 아날로그 1번핀에 입력되는 신호를 대입
-
-    int buttonValue2 = digitalRead(2);               // buttonValue값 선언
-    int buttonValue3 = digitalRead(3);
-    int buttonValue4 = digitalRead(4);
-    int buttonValue5 = digitalRead(5);
-
-    if (buttonValue2 == LOW) {                       // if문을 이용하여 각 버튼이 눌리면 알파벳이 시리얼모니터에 출력되도록 설정
-        String data = "front car!";
-        LCDprint(data);
-    }
-    if (buttonValue3 == LOW) {
-        String data = "front animal!";
-        LCDprint(data);
-    }
-    if (buttonValue4 == LOW) {
-        String data = "baby in car";
-        LCDprint(data);
-    }
-    if (buttonValue5 == LOW) {
-        String data = "broken car";
-        LCDprint(data);
-    }
-
-    Serial.print(X);
-    Serial.print(", ");
-    Serial.println(Y);
-
-    if(X < 495) {
-        // 왼쪽
-        if(Y < 515) {
-        Serial.println('1');      
-        digitalWrite(GREEN, HIGH);     
-        digitalWrite(BLUE, LOW);     
-        digitalWrite(RED, HIGH);         //빨간불 끄기
-        }
-        else if(Y >= 515) {
-        Serial.println('1');
-        digitalWrite(GREEN, HIGH);     
-        digitalWrite(BLUE, HIGH);     
-        digitalWrite(RED, LOW);      
-        }
-    }
-
-    else if(X > 495) {
-        // 오른쪽
-        if(Y < 515) {
-        Serial.println('2');    
-        digitalWrite(GREEN, HIGH);     
-        digitalWrite(BLUE, LOW);     
-        digitalWrite(RED, HIGH);      
-        }
-        else if(Y >= 515) {
-        Serial.println('2');
-        digitalWrite(GREEN, HIGH);     
-        digitalWrite(BLUE, HIGH);     
-        digitalWrite(RED, LOW);      
-        }
-    }
-
-    else if(X == 495) {
-        // 후진
-        if(Y < 515) {
-        Serial.println('4');     
-        digitalWrite(GREEN, LOW);     
-        digitalWrite(BLUE, LOW);     
-        digitalWrite(RED, HIGH);      
-        }
-        // 전진
-        else if(Y > 515) {
-        Serial.println('3');
-        digitalWrite(GREEN, LOW);     
-        digitalWrite(BLUE, HIGH);     
-        digitalWrite(RED, LOW);      
-        }
-    }
-
-    
-    if (X == 495) {
-        if (Y == 515) {
-        digitalWrite(GREEN, LOW);     
-        digitalWrite(BLUE, LOW);     
-        digitalWrite(RED, LOW);  
-        }
-    }
-
-    delay(1000); 
-    }
+	if (joystick_XYaxis_value[X_PIN_INDEX] == 493)
+	{
+		if (joystick_XYaxis_value[Y_PIN_INDEX] > 515)
+		{
+			joystick_XYstick_forward(joystick_obj->xystick);
+		}
+	}
+	if (joystick_XYaxis_value[X_PIN_INDEX] == 493)
+	{
+		if (joystick_XYaxis_value[Y_PIN_INDEX] < 515)
+		{
+			joystick_XYstick_back(joystick_obj->xystick);
+		}
+	}
+	if (joystick_XYaxis_value[X_PIN_INDEX] < 493)
+	{
+		joystick_XYstick_left(joystick_obj->xystick);
+	}
+	if (joystick_XYaxis_value[X_PIN_INDEX] > 493)
+	{
+		joystick_XYstick_right(joystick_obj->xystick);
+	}
+	if (joystick_XYaxis_value[X_PIN_INDEX] == 493)
+	{
+		if (joystick_XYaxis_value[Y_PIN_INDEX] == 515)
+		{
+			joystick_XYstick_fixed(joystick_obj->xystick);
+		}
+	}
+}
     ```
 
 ### 👨‍💻 5. 프로젝트 성과 결과
@@ -541,3 +523,14 @@ extern "C"         // 컴파일러에서 C언어가 컴파일 되도록 하는 �
         ![16.png](/image/좌후진.png)
         - 우/후진 : 빨강/초록
         ![16.png](/image/우후진.png)
+
+
+- 객체 지향 코드로 바꿀 시 메모리 용량 비교하기
+
+ ![16.png](/image/아두이노저장용량1.png)
+ 절차지향 코드로 구현 
+
+ ![16.png](/image/아두이노저장용량2.png)
+ 객체지향 코드로 구현
+
+ flush 메모리의 용량이 줄어들고 SRam용량은 늘어났다.
