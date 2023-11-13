@@ -353,8 +353,8 @@ void loop()
     ```
     
 - **arduino**
-    ```arduino
-    //joystick.c
+```arduino
+//joystick.c
 #include <stdint.h> //int x비트 같은 자료형을 쓰기위해서
 #include <Arduino.h>
 #include "joystick.h"
@@ -492,7 +492,7 @@ void joystick_control(joystick_t *joystick_obj)
 		}
 	}
 }
-    ```
+```
 
 ### 👨‍💻 5. 프로젝트 성과 결과
 - **🚗 LCD 판에 뒷차에 상황 알리기**
