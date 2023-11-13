@@ -20,6 +20,15 @@ void setup()
 
 void loop()
 {
+
+  // int x=analogRead(X_PIN_INDEX);
+  // int y=analogRead(Y_PIN_INDEX);
+  // Serial.print("x:");
+  // Serial.print(x);
+  // Serial.print("y:");
+  // Serial.print(y);
+  // Serial.print("\n");
+
   joystick_control(joystick);
   joystick_lcd_print(joystick);
 }

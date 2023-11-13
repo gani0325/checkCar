@@ -22,11 +22,17 @@ void joystick_XYstick_forward(xystick_t* xystick_obj){
 void joystick_XYstick_back(xystick_t* xystick_obj){
          led_RED_on();
 }
-void joystick_XYstick_left(xystick_t* xystick_obj){
-         led_GREEN_on();
+void joystick_XYstick_forward_left(xystick_t* xystick_obj){
+         led_BLUE_GREEN_on();
 }
-void joystick_XYstick_right(xystick_t* xystick_obj){
-         led_GREEN_on();
+void joystick_XYstick_back_left(xystick_t* xystick_obj){
+         led_RED_GREEN_on();
+}
+void joystick_XYstick_forward_right(xystick_t* xystick_obj){
+         led_BLUE_GREEN_on();
+}
+void joystick_XYstick_back_right(xystick_t* xystick_obj){
+         led_RED_GREEN_on();
 }
 void joystick_XYstick_fixed(xystick_t* xystick_obj){
          led_off();
