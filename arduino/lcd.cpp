@@ -10,7 +10,6 @@ extern "C"         // g++컴파일러에서 C언어가 컴파일 되도록 하�
      LiquidCrystal_I2C lcd(LCD_FAMILY, COLUMN, ROW);
      void lcd_init_CPP()
      {
-          // LiquidCrystal_I2C lcd;
           lcd.init();
           lcd.backlight();
      }
