@@ -23,4 +23,3 @@ void loop()
   joystick_control(joystick);
   joystick_lcd_print(joystick);
 }
-

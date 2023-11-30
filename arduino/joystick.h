@@ -20,8 +20,10 @@ int *joystick_get_XYaxisvalue(struct joystick_t *);
 // LED
 void joystick_XYstick_forward();
 void joystick_XYstick_back();
-void joystick_XYstick_left();
-void joystick_XYstick_right();
+void joystick_XYstick_forward_left();
+void joystick_XYstick_back_left();
+void joystick_XYstick_forward_right();
+void joystick_XYstick_back_right();
 void joystick_XYstick_fixed();
 // lcd
 void lcd_ctor(uint8_t, uint8_t, uint8_t);

@@ -49,7 +49,7 @@ void joystick_ctor(joystick_t *joystick_obj) // joystick 객체를 시그니처�
 	lcd_init();
 }
 
-void joystick_lcd_print(joystick_t* joystick_obj)
+void joystick_lcd_print(joystick_t *joystick_obj)
 {
 	char clicked_button = 'E'; // 초기화
 	clicked_button = joystick_digitalRead(joystick_obj);
@@ -105,31 +105,45 @@ void joystick_control(joystick_t *joystick_obj)
 	joystick_XYaxis_value[X_PIN_INDEX] = xstick_analogRead(joystick_obj->xystick);
 	joystick_XYaxis_value[Y_PIN_INDEX] = ystick_analogRead(joystick_obj->xystick);
 
-	if (joystick_XYaxis_value[X_PIN_INDEX] == 493)
+	if (joystick_XYaxis_value[X_PIN_INDEX] == 493 || joystick_XYaxis_value[X_PIN_INDEX] == 492)
 	{
-		if (joystick_XYaxis_value[Y_PIN_INDEX] > 515)
+		if (joystick_XYaxis_value[Y_PIN_INDEX] > 514)
 		{
 			joystick_XYstick_forward(joystick_obj->xystick);
 		}
 	}
-	if (joystick_XYaxis_value[X_PIN_INDEX] == 493)
+	if (joystick_XYaxis_value[X_PIN_INDEX] == 493 || joystick_XYaxis_value[X_PIN_INDEX] == 492)
 	{
-		if (joystick_XYaxis_value[Y_PIN_INDEX] < 515)
+		if (joystick_XYaxis_value[Y_PIN_INDEX] < 514)
 		{
 			joystick_XYstick_back(joystick_obj->xystick);
 		}
 	}
-	if (joystick_XYaxis_value[X_PIN_INDEX] < 493)
+	if (joystick_XYaxis_value[Y_PIN_INDEX] > 514)
 	{
-		joystick_XYstick_left(joystick_obj->xystick);
+		if (joystick_XYaxis_value[X_PIN_INDEX] < 492)
+		{
+			joystick_XYstick_forward_left(joystick_obj->xystick);
+		}
+		if (joystick_XYaxis_value[X_PIN_INDEX] > 493)
+		{
+			joystick_XYstick_forward_right(joystick_obj->xystick);
+		}
 	}
-	if (joystick_XYaxis_value[X_PIN_INDEX] > 493)
+	if (joystick_XYaxis_value[Y_PIN_INDEX] < 514)
 	{
-		joystick_XYstick_right(joystick_obj->xystick);
+		if (joystick_XYaxis_value[X_PIN_INDEX] > 493)
+		{
+			joystick_XYstick_back_right(joystick_obj->xystick);
+		}
+		if (joystick_XYaxis_value[X_PIN_INDEX] < 492)
+		{
+			joystick_XYstick_back_left(joystick_obj->xystick);
+		}
 	}
-	if (joystick_XYaxis_value[X_PIN_INDEX] == 493)
+	if (joystick_XYaxis_value[X_PIN_INDEX] == 493 || joystick_XYaxis_value[X_PIN_INDEX] == 492)
 	{
-		if (joystick_XYaxis_value[Y_PIN_INDEX] == 515)
+		if (joystick_XYaxis_value[Y_PIN_INDEX] == 514)
 		{
 			joystick_XYstick_fixed(joystick_obj->xystick);
 		}
