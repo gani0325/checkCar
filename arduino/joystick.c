@@ -10,8 +10,9 @@ typedef struct joystick_t
 {
 	struct button_t *but[5]; // 버튼 4개의 주소 배열에 할당. 마지막index는 빈 return 값을 받기위함.
 	struct xystick_t *xystick;
+	char data[16];
 } joystick_t;
-
+  
 char selected_button;
 uint8_t pin_status[4];
 int *joystick_XYaxis_value[2];
@@ -73,6 +74,18 @@ void joystick_lcd_print(joystick_t *joystick_obj)
 		char data[COLUMN + 1] = "broken car";
 		lcd_print(data);
 	}
+	  if(Serial.available()) {
+      char data[16] = {0,};
+      char buf;
+
+      // 최대 16개까지 buf을 읽어서 data[i]에 넣는다
+      for (int i = 0; i < 16; i++) {
+          buf = Serial.read();
+          data[i] = buf;
+      }
+      // LCD에 출력하기
+      LCDprint(data);
+  }
 };
 
 char joystick_digitalRead(joystick_t *joystick_obj)
