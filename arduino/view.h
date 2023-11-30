@@ -1,0 +1,1 @@
+void view(joystick_t*, char);
