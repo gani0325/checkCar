@@ -10,6 +10,7 @@ typedef struct joystick_t
 {
 	struct button_t *but[5]; // 버튼 4개의 주소 배열에 할당. 마지막index는 빈 return 값을 받기위함.
 	struct xystick_t *xystick;
+	char data[16];
 } joystick_t;
 
 char selected_button;
@@ -51,8 +52,12 @@ void joystick_ctor(joystick_t *joystick_obj) // joystick 객체를 시그니처�
 
 void joystick_lcd_print(joystick_t *joystick_obj)
 {
+
 	char clicked_button = 'E'; // 초기화
 	clicked_button = joystick_digitalRead(joystick_obj);
+	if(joystick_obj->data!=NULL){
+		lcd_print(joystick_obj->data);
+	}
 	if (clicked_button == 'A')
 	{ // if문을 이용하여 각 버튼이 눌리면 알파벳이 시리얼모니터에 출력되도록 설정
 		char data[COLUMN + 1] = "front car!";
@@ -73,6 +78,7 @@ void joystick_lcd_print(joystick_t *joystick_obj)
 		char data[COLUMN + 1] = "broken car";
 		lcd_print(data);
 	}
+
 };
 
 char joystick_digitalRead(joystick_t *joystick_obj)

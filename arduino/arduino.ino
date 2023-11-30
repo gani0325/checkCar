@@ -8,7 +8,14 @@
 #include "lcd.h"
 
 // joystick 객체 생성
-joystick_t *joystick;   
+joystick_t *joystick;  
+
+typedef struct joystick_t
+{
+	struct button_t *but[5]; // 버튼 4개의 주소 배열에 할당. 마지막index는 빈 return 값을 받기위함.
+	struct xystick_t *xystick;
+	char data[16];
+} joystick_t;
 
 void setup()
 {
@@ -20,15 +27,16 @@ void setup()
 
 void loop()
 {
-
-  // int x=analogRead(X_PIN_INDEX);
-  // int y=analogRead(Y_PIN_INDEX);
-  // Serial.print("x:");
-  // Serial.print(x);
-  // Serial.print("y:");
-  // Serial.print(y);
-  // Serial.print("\n");
-
+	if(Serial.available()){
+      char buf;
+      // 최대 16개까지 buf을 읽어서 data[i]에 넣는다
+      for (int i = 0; i < 16; i++) {
+          buf = Serial.read();
+          joystick->data[i] = buf;
+      }
+      // LCD에 출력하기
+      joystick_lcd_print(joystick);
+  	}
   joystick_control(joystick);
-  joystick_lcd_print(joystick);
+  
 }
